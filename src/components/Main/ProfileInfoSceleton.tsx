@@ -1,8 +1,9 @@
 import React from 'react';
 import ContentLoader from 'react-content-loader';
 
-const ProfileInfoSceleton = (props) => (
+const ProfileInfoSceleton: React.FC<{}> = (props) => (
   <ContentLoader
+    className="profile__info"
     speed={2}
     width={260}
     height={79}

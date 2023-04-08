@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { RefObject } from 'react';
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
@@ -19,8 +19,12 @@ import InfoTooltip from './InfoTooltip';
 
 import errorImage from '../images/icons/error.svg';
 import successImage from '../images/icons/success.svg';
+import { CardType } from './Card/types';
+import { UserType } from '../contexts/UserType';
+import { LoginType } from './Login/types';
+import { RegisterType } from './Register/types';
 
-function App() {
+const App: React.FC = () => {
   const [currentUser, setCurrentUser] = React.useState(React.useContext(CurrentUserContext));
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [email, setEmail] = React.useState('');
@@ -36,11 +40,11 @@ function App() {
   const [isConfirmPopupOpen, setIsConfirmPopupOpen] = React.useState(false);
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
 
-  const [cardToDelete, setCardToDelete] = React.useState(null);
+  const [cardToDelete, setCardToDelete] = React.useState<CardType | null>(null);
 
-  const [selectedCard, setSelectedCard] = React.useState(null);
+  const [selectedCard, setSelectedCard] = React.useState<CardType | null>(null);
 
-  const [cards, setCards] = React.useState([]);
+  const [cards, setCards] = React.useState<CardType[]>([]);
 
   const navigate = useNavigate();
 
@@ -91,6 +95,8 @@ function App() {
         name: '',
         about: '',
         avatar: '',
+        cohort: '',
+        _id: '',
       });
     }
   }, [loggedIn]);
@@ -123,12 +129,12 @@ function App() {
   }
 
   //-----------------------------------------------------------------------CARD HANDLERS
-  function handleCardClick(card) {
+  function handleCardClick(card: CardType) {
     handleImageClick();
     setSelectedCard(card);
   }
 
-  function handleCardLike(card) {
+  function handleCardLike(card: CardType) {
     // Снова проверяем, есть ли уже лайк на этой карточке
     const isLiked = card.likes.some((user) => user._id === currentUser._id);
 
@@ -143,12 +149,17 @@ function App() {
       .catch(api.handleError);
   }
 
-  function handleCardDelete(card) {
+  function handleCardDelete(card: CardType) {
     setIsConfirmPopupOpen(true);
     setCardToDelete(card);
   }
 
-  function confirmSubmitAction(card, submitButton, awaitText, originalText) {
+  function confirmSubmitAction(
+    card: CardType,
+    submitButton: RefObject<HTMLButtonElement>,
+    awaitText: string,
+    originalText: string,
+  ) {
     renderLoading(true, submitButton, awaitText, originalText);
     api
       .deleteCard(card._id)
@@ -164,14 +175,26 @@ function App() {
       });
   }
 
-  function renderLoading(isLoading, buttonRef, awaitText, originalText) {
-    isLoading
-      ? (buttonRef.current.textContent = awaitText)
-      : (buttonRef.current.textContent = originalText);
+  function renderLoading(
+    isLoading: boolean,
+    buttonRef: RefObject<HTMLButtonElement>,
+    awaitText: string,
+    originalText: string,
+  ) {
+    if (buttonRef.current) {
+      isLoading
+        ? (buttonRef.current.textContent = awaitText)
+        : (buttonRef.current.textContent = originalText);
+    }
   }
 
   //------------------------------------------------------------------------USER UPDATE HANDLERS
-  function handleUpdateUser(userData, submitButton, awaitText, originalText) {
+  function handleUpdateUser(
+    userData: UserType,
+    submitButton: RefObject<HTMLButtonElement>,
+    awaitText: string,
+    originalText: string,
+  ) {
     renderLoading(true, submitButton, awaitText, originalText);
     api
       .setUser(userData)
@@ -185,7 +208,12 @@ function App() {
       });
   }
 
-  function handleUpdateAvatar(avatar, submitButton, awaitText, originalText) {
+  function handleUpdateAvatar(
+    avatar: string,
+    submitButton: RefObject<HTMLButtonElement>,
+    awaitText: string,
+    originalText: string,
+  ) {
     renderLoading(true, submitButton, awaitText, originalText);
     api
       .setAvatar(avatar)
@@ -199,7 +227,12 @@ function App() {
       });
   }
 
-  function handleAddPlace(card, submitButton, awaitText, originalText) {
+  function handleAddPlace(
+    card: CardType,
+    submitButton: RefObject<HTMLButtonElement>,
+    awaitText: string,
+    originalText: string,
+  ) {
     renderLoading(true, submitButton, awaitText, originalText);
     api
       .addCard(card)
@@ -214,7 +247,12 @@ function App() {
   }
 
   /* -------------------------------------------------------------------AUTH HANLERS */
-  const handleLogin = (formValue, submitButton, awaitText, originalText) => {
+  const handleLogin = (
+    formValue: LoginType,
+    submitButton: RefObject<HTMLButtonElement>,
+    awaitText: string,
+    originalText: string,
+  ) => {
     renderLoading(true, submitButton, awaitText, originalText);
     login(formValue)
       .then((res) => {
@@ -238,7 +276,12 @@ function App() {
       });
   };
 
-  const handleRegister = (formValue, submitButton, awaitText, originalText) => {
+  const handleRegister = (
+    formValue: RegisterType,
+    submitButton: RefObject<HTMLButtonElement>,
+    awaitText: string,
+    originalText: string,
+  ) => {
     renderLoading(true, submitButton, awaitText, originalText);
     register(formValue)
       .then((res) => {
@@ -281,13 +324,15 @@ function App() {
               <ProtectedRoute
                 element={Main}
                 loggedIn={loggedIn}
-                onEditProfile={handleEditProfileClick}
-                onAddPlace={handleAddPlaceClick}
-                onEditAvatar={handleEditAvatarClick}
-                onCardClick={handleCardClick}
-                onCardDelete={handleCardDelete}
-                onCardLike={handleCardLike}
-                cards={cards}
+                props={{
+                  onEditProfile: handleEditProfileClick,
+                  onAddPlace: handleAddPlaceClick,
+                  onEditAvatar: handleEditAvatarClick,
+                  onCardClick: handleCardClick,
+                  onCardDelete: handleCardDelete,
+                  onCardLike: handleCardLike,
+                  cards: cards,
+                }}
               />
             }
           />
@@ -317,8 +362,13 @@ function App() {
         <ConfirmPopup
           isOpen={isConfirmPopupOpen}
           onClose={closeAllPopups}
-          confirmSubmitAction={(submitButton, awaitText, originalText) => {
-            confirmSubmitAction(cardToDelete, submitButton, awaitText, originalText);
+          confirmSubmitAction={(
+            submitButton: RefObject<HTMLButtonElement>,
+            awaitText: string,
+            originalText: string,
+          ) => {
+            cardToDelete &&
+              confirmSubmitAction(cardToDelete, submitButton, awaitText, originalText);
           }}
         ></ConfirmPopup>
         {/* ---------------------------------------------------------------------IMAGE POPUP */}
@@ -332,6 +382,6 @@ function App() {
       </div>
     </CurrentUserContext.Provider>
   );
-}
+};
 
 export default App;

@@ -1,8 +1,9 @@
 import React from 'react';
 import ContentLoader from 'react-content-loader';
 
-const AvatarSceleton = (props) => (
+const AvatarSceleton: React.FC<{}> = (props) => (
   <ContentLoader
+    className="profile__avatar"
     speed={2}
     width={120}
     height={120}

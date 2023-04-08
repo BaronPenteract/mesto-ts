@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { useFormAndValidation } from '../hooks/useFormAndValidation';
+import { useFormAndValidation } from '../../hooks/useFormAndValidation';
 
 const Register = ({ onRegister }) => {
   const { values, handleChange, errors, isValid, setIsValid } = useFormAndValidation();

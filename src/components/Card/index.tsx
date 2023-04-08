@@ -1,7 +1,16 @@
 import React from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import { CardPropsType } from './types';
 
-export default function Card({ name, link, likes, owner, onCardClick, onCardLike, onCardDelete }) {
+const Card: React.FC<CardPropsType> = ({
+  name,
+  link,
+  likes,
+  owner,
+  onCardClick,
+  onCardLike,
+  onCardDelete,
+}) => {
   const currentUser = React.useContext(CurrentUserContext);
 
   const isOwner = owner._id === currentUser._id;
@@ -40,4 +49,6 @@ export default function Card({ name, link, likes, owner, onCardClick, onCardLike
       </div>
     </article>
   );
-}
+};
+
+export default Card;

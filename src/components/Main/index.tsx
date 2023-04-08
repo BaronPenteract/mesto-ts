@@ -7,16 +7,17 @@ import CardSceleton from '../Card/CardSceleton';
 import Footer from '../Footer';
 import AvatarSceleton from './AvatarSceleton';
 import ProfileInfoSceleton from './ProfileInfoSceleton';
+import { MainPropsType } from './types';
 
-export default function Main({
+const Main: React.FC<MainPropsType> = ({
   onEditProfile,
   onAddPlace,
   onEditAvatar,
   onCardClick,
-  cards,
   onCardDelete,
   onCardLike,
-}) {
+  cards,
+}) => {
   const { name, about, avatar } = React.useContext(CurrentUserContext);
 
   const cardsElements = cards.map((card) => (
@@ -51,7 +52,7 @@ export default function Main({
               {avatar ? (
                 <img className="profile__avatar" src={avatar} alt="Аватарка путешественника" />
               ) : (
-                <AvatarSceleton className="profile__avatar" />
+                <AvatarSceleton />
               )}
               <button
                 className="profile__btn-avatar-edit anim-avatar-button"
@@ -72,7 +73,7 @@ export default function Main({
                 <p className="profile__subtitle">{about}</p>
               </div>
             ) : (
-              <ProfileInfoSceleton className="profile__info" />
+              <ProfileInfoSceleton />
             )}
           </div>
           <button
@@ -89,4 +90,5 @@ export default function Main({
       <Footer />
     </>
   );
-}
+};
+export default Main;

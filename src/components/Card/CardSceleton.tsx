@@ -1,7 +1,7 @@
 import React from 'react';
 import ContentLoader from 'react-content-loader';
 
-const CardSceleton = (props) => (
+const CardSceleton: React.FC<{}> = (props) => (
   <ContentLoader
     className="cards__item"
     speed={2}
