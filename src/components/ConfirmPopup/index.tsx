@@ -1,10 +1,15 @@
 import React from 'react';
-import PopupWithForm from './PopupWithForm';
+import PopupWithForm from '../PopupWithForm';
+import { ConfirmPopupPropsType } from './types';
 
-export default function ConfirmPopup({ isOpen, onClose, confirmSubmitAction }) {
-  const submitButton = React.useRef();
+const ConfirmPopup: React.FC<ConfirmPopupPropsType> = ({
+  isOpen,
+  onClose,
+  confirmSubmitAction,
+}) => {
+  const submitButton = React.useRef<HTMLButtonElement>(null);
 
-  const submit = (e) => {
+  const submit: React.FormEventHandler = (e) => {
     e.preventDefault();
 
     confirmSubmitAction(submitButton, 'Удаление...', 'Да');
@@ -25,4 +30,6 @@ export default function ConfirmPopup({ isOpen, onClose, confirmSubmitAction }) {
       </>
     </PopupWithForm>
   );
-}
+};
+
+export default ConfirmPopup;

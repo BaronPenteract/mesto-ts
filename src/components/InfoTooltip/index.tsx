@@ -1,19 +1,24 @@
-const InfoTooltip = ({ isOpen, infoToolTipContent, onClose }) => {
-  isOpen
-    ? document.addEventListener('keydown', closeByEsc)
-    : document.removeEventListener('keydown', closeByEsc);
+import React from 'react';
+import { InfoTooltipPropsType } from './types';
 
-  function closeByEsc(e) {
-    if (e.key === 'Escape') {
-      onClose();
-    }
-  }
-
-  function closeByOverlay(e) {
+const InfoTooltip: React.FC<InfoTooltipPropsType> = ({ isOpen, infoToolTipContent, onClose }) => {
+  const closeByOverlay: React.MouseEventHandler = (e) => {
     if (e.target === e.currentTarget) {
       onClose();
     }
-  }
+  };
+
+  const closeByEsc = React.useCallback((e: Event) => {
+    const _e = e as KeyboardEvent;
+
+    if (_e.key === 'Escape') {
+      onClose();
+    }
+  }, []);
+
+  isOpen
+    ? document.addEventListener('keydown', closeByEsc)
+    : document.removeEventListener('keydown', closeByEsc);
 
   return (
     <div

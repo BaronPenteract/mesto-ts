@@ -1,11 +1,32 @@
+import { CardType } from "../components/Card/types";
+import { AvatarType } from "../components/EditAvatarPopup/types";
+import { UserType } from "../contexts/UserType";
+
+interface Api {
+  _baseUrl: string;
+  _token: string;
+  _headers: {
+    authorization: string;
+    'Content-Type': string;
+  }
+}
+
+type ApiPropsType = {
+  baseUrl: string;
+  headers: {
+    authorization: string;
+    'Content-Type': string;
+  }
+}
+
 class Api {
-  constructor(options) {
+  constructor(options: ApiPropsType) {
     this._baseUrl = options.baseUrl;
     this._headers = options.headers;
     this._token = this._headers.authorization;
   }
 
-  getInitialCards() {
+  async getInitialCards(): Promise<CardType[]> {
     return fetch(`${this._baseUrl}/cards`, {
       headers: {
         authorization: this._token,
@@ -13,7 +34,7 @@ class Api {
     }).then(this._handleResponse);
   }
 
-  addCard({ name, link }) {
+  addCard({ name, link }: CardType): Promise<CardType> {
     return fetch(`${this._baseUrl}/cards`, {
       method: 'POST',
       headers: {
@@ -27,7 +48,7 @@ class Api {
     }).then(this._handleResponse);
   }
 
-  deleteCard(cardId) {
+  deleteCard(cardId: string) {
     return fetch(`${this._baseUrl}/cards/${cardId}`, {
       method: 'DELETE',
       headers: {
@@ -36,7 +57,7 @@ class Api {
     });
   }
 
-  likeCard(cardId) {
+  likeCard(cardId: string): Promise<(result: Response) => Promise<Response>> {
     return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: 'PUT',
       headers: {
@@ -45,7 +66,7 @@ class Api {
     }).then(this._handleResponse);
   }
 
-  unLikeCard(cardId) {
+  unLikeCard(cardId: string): Promise<(result: Response) => Promise<Response>> {
     return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: 'DELETE',
       headers: {
@@ -54,7 +75,7 @@ class Api {
     }).then(this._handleResponse);
   }
 
-  changeLikeCardStatus(cardId, isLiked) {
+  changeLikeCardStatus(cardId: string, isLiked: boolean) {
     return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: isLiked ? 'DELETE' : 'PUT',
       headers: {
@@ -63,7 +84,7 @@ class Api {
     }).then(this._handleResponse);
   }
 
-  getUser() {
+  getUser(): Promise<UserType> {
     return fetch(`${this._baseUrl}/users/me `, {
       headers: {
         authorization: this._token,
@@ -71,7 +92,7 @@ class Api {
     }).then(this._handleResponse);
   }
 
-  setUser({ name, about }) {
+  setUser({ name, about }: UserType): Promise<UserType> {
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
       headers: {
@@ -85,7 +106,7 @@ class Api {
     }).then(this._handleResponse);
   }
 
-  setAvatar(avatarData) {
+  setAvatar(avatarData: AvatarType): Promise<UserType> {
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: 'PATCH',
       headers: {
@@ -96,16 +117,13 @@ class Api {
     }).then(this._handleResponse);
   }
 
-  handleError(err) {
+  handleError(err: Error) {
     console.log(err);
   }
 
-  _handleResponse(result) {
-    if (result.ok) {
-      return result.json();
-    }
-
-    return Promise.reject(`Ошибка: ${result.status}`);
+  async _handleResponse(result: Response): Promise<any> {
+    const data = await result.json();
+    return data;
   }
 }
 

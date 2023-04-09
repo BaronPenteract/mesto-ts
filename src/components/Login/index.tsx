@@ -1,13 +1,13 @@
 import React from 'react';
 
 import { useFormAndValidation } from '../../hooks/useFormAndValidation';
-import { LoginPropsType, LoginType } from './types';
+import { LoginErrorsType, LoginPropsType, LoginType } from './types';
 
 const Login: React.FC<LoginPropsType> = ({ onLogin }) => {
   const { values, handleChange, errors, isValid, setIsValid } = useFormAndValidation();
 
   const formValues = values as LoginType;
-  const formErrors = errors as LoginType;
+  const formErrors = errors as LoginErrorsType;
 
   const submitButton = React.useRef<HTMLButtonElement>(null);
 

@@ -21,8 +21,10 @@ import errorImage from '../images/icons/error.svg';
 import successImage from '../images/icons/success.svg';
 import { CardType } from './Card/types';
 import { UserType } from '../contexts/UserType';
-import { LoginType } from './Login/types';
-import { RegisterType } from './Register/types';
+import { OnLoginType } from './Login/types';
+import { OnRegisterType } from './Register/types';
+import { OnAddPlaceType } from './AddPlacePopup/types';
+import { OnUpdateAvatarType } from './EditAvatarPopup/types';
 
 const App: React.FC = () => {
   const [currentUser, setCurrentUser] = React.useState(React.useContext(CurrentUserContext));
@@ -208,12 +210,12 @@ const App: React.FC = () => {
       });
   }
 
-  function handleUpdateAvatar(
-    avatar: string,
-    submitButton: RefObject<HTMLButtonElement>,
-    awaitText: string,
-    originalText: string,
-  ) {
+  const handleUpdateAvatar: OnUpdateAvatarType = (
+    avatar,
+    submitButton,
+    awaitText,
+    originalText,
+  ) => {
     renderLoading(true, submitButton, awaitText, originalText);
     api
       .setAvatar(avatar)
@@ -225,14 +227,9 @@ const App: React.FC = () => {
       .finally(() => {
         renderLoading(false, submitButton, awaitText, originalText);
       });
-  }
+  };
 
-  function handleAddPlace(
-    card: CardType,
-    submitButton: RefObject<HTMLButtonElement>,
-    awaitText: string,
-    originalText: string,
-  ) {
+  const handleAddPlace: OnAddPlaceType = (card, submitButton, awaitText, originalText) => {
     renderLoading(true, submitButton, awaitText, originalText);
     api
       .addCard(card)
@@ -244,15 +241,10 @@ const App: React.FC = () => {
       .finally(() => {
         renderLoading(false, submitButton, awaitText, originalText);
       });
-  }
+  };
 
   /* -------------------------------------------------------------------AUTH HANLERS */
-  const handleLogin = (
-    formValue: LoginType,
-    submitButton: RefObject<HTMLButtonElement>,
-    awaitText: string,
-    originalText: string,
-  ) => {
+  const handleLogin: OnLoginType = (formValue, submitButton, awaitText, originalText) => {
     renderLoading(true, submitButton, awaitText, originalText);
     login(formValue)
       .then((res) => {
@@ -276,12 +268,7 @@ const App: React.FC = () => {
       });
   };
 
-  const handleRegister = (
-    formValue: RegisterType,
-    submitButton: RefObject<HTMLButtonElement>,
-    awaitText: string,
-    originalText: string,
-  ) => {
+  const handleRegister: OnRegisterType = (formValue, submitButton, awaitText, originalText) => {
     renderLoading(true, submitButton, awaitText, originalText);
     register(formValue)
       .then((res) => {
@@ -300,7 +287,6 @@ const App: React.FC = () => {
           text: 'Что-то пошло не так! Попробуйте ещё раз.',
           image: errorImage,
         });
-        console.log(err);
       })
       .finally(() => {
         renderLoading(false, submitButton, awaitText, originalText);

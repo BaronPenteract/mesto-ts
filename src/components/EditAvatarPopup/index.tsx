@@ -1,13 +1,21 @@
 import React from 'react';
 
-import PopupWithForm from './PopupWithForm';
-import { useFormAndValidation } from '../hooks/useFormAndValidation';
+import PopupWithForm from '../PopupWithForm';
+import { useFormAndValidation } from '../../hooks/useFormAndValidation';
+import { AvatarType, EditAvatarPopupErrorsType, EditAvatarPopupPropsType } from './types';
 
-export default function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
-  const submitButton = React.useRef();
+const EditAvatarPopup: React.FC<EditAvatarPopupPropsType> = ({
+  isOpen,
+  onClose,
+  onUpdateAvatar,
+}) => {
+  const submitButton = React.useRef<HTMLButtonElement>(null);
 
   const { values, handleChange, errors, isValid, setValues, resetForm, setIsValid } =
     useFormAndValidation();
+
+  const formValues = values as AvatarType;
+  const formErrors = errors as EditAvatarPopupErrorsType;
 
   React.useEffect(() => {
     setValues({});
@@ -15,11 +23,13 @@ export default function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
     setIsValid(false);
   }, [isOpen]);
 
-  function handleSubmit(e) {
+  const handleSubmit: React.FormEventHandler = (e) => {
     e.preventDefault();
 
-    onUpdateAvatar(values, submitButton, 'Сохранение...', submitButton.current.textContent);
-  }
+    if (submitButton.current?.textContent) {
+      onUpdateAvatar(formValues, submitButton, 'Сохранение...', submitButton.current.textContent);
+    }
+  };
 
   return (
     <PopupWithForm
@@ -34,16 +44,16 @@ export default function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
           <label className="form__label">
             <input
               id="avatar-url-input"
-              className={`form__input ${errors.avatar ? 'form__input_type_error' : ''}`}
+              className={`form__input ${formErrors.avatar ? 'form__input_type_error' : ''}`}
               type="url"
               name="avatar"
-              value={values.avatar || ''}
+              value={formValues.avatar || ''}
               onChange={handleChange}
               placeholder="Ссылка на аватар"
               required
             />
-            <span className={`form__error ${errors.avatar ? 'form__error_active' : ''}`}>
-              {errors.avatar || ''}
+            <span className={`form__error ${formErrors.avatar ? 'form__error_active' : ''}`}>
+              {formErrors.avatar || ''}
             </span>
           </label>
         </fieldset>
@@ -58,4 +68,6 @@ export default function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
       </>
     </PopupWithForm>
   );
-}
+};
+
+export default EditAvatarPopup;

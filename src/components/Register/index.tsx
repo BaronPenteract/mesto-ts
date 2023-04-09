@@ -2,19 +2,26 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { useFormAndValidation } from '../../hooks/useFormAndValidation';
+import { RegisterErrorsType, RegisterPropsType, RegisterType } from './types';
 
-const Register = ({ onRegister }) => {
+const Register: React.FC<RegisterPropsType> = ({ onRegister }) => {
   const { values, handleChange, errors, isValid, setIsValid } = useFormAndValidation();
 
-  const submitButton = React.useRef();
+  const formValues = values as RegisterType;
+  const formErrors = errors as RegisterErrorsType;
+
+  const submitButton = React.useRef<HTMLButtonElement>(null);
 
   React.useEffect(() => {
     setIsValid(false);
   }, []);
 
-  const submitHandler = (e) => {
+  const submitHandler: React.FormEventHandler = (e) => {
     e.preventDefault();
-    onRegister(values, submitButton, 'Регистрация...', submitButton.current.textContent);
+
+    if (submitButton.current?.textContent) {
+      onRegister(formValues, submitButton, 'Регистрация...', submitButton.current.textContent);
+    }
   };
 
   return (
@@ -35,12 +42,14 @@ const Register = ({ onRegister }) => {
               type="email"
               name="email"
               onChange={handleChange}
-              value={values.email || ''}
+              value={formValues.email || ''}
               placeholder="Email"
               required
             />
-            <span className={`form-auth__error ${errors.email ? 'form-auth__error_active' : ''}`}>
-              {errors.email || ''}
+            <span
+              className={`form-auth__error ${formErrors.email ? 'form-auth__error_active' : ''}`}
+            >
+              {formErrors.email || ''}
             </span>
           </label>
           <label className="form-auth__label">
@@ -49,15 +58,15 @@ const Register = ({ onRegister }) => {
               type="password"
               name="password"
               onChange={handleChange}
-              value={values.password || ''}
+              value={formValues.password || ''}
               placeholder="Пароль"
               minLength={4}
               required
             />
             <span
-              className={`form-auth__error ${errors.password ? 'form-auth__error_active' : ''}`}
+              className={`form-auth__error ${formErrors.password ? 'form-auth__error_active' : ''}`}
             >
-              {errors.password || ''}
+              {formErrors.password || ''}
             </span>
           </label>
         </fieldset>

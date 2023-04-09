@@ -1,27 +1,37 @@
 import React from 'react';
+import { PopupWithFormPropsType } from './types';
 
-export default function PopupWithForm({ isOpen, name, title, onClose, onSubmit, children }) {
-  isOpen
-    ? document.addEventListener('keydown', closeByEsc)
-    : document.removeEventListener('keydown', closeByEsc);
-
-  const formRef = React.useRef(); //начальное значение?
-
+const PopupWithForm: React.FC<PopupWithFormPropsType> = ({
+  isOpen,
+  name,
+  title,
+  onClose,
+  onSubmit,
+  children,
+}) => {
   function handleClose() {
     onClose();
   }
 
-  function closeByOverlay(e) {
+  const closeByOverlay: React.MouseEventHandler = (e) => {
     if (e.target === e.currentTarget) {
       handleClose();
     }
-  }
+  };
 
-  function closeByEsc(e) {
-    if (e.key === 'Escape') {
+  const closeByEsc = React.useCallback((e: Event) => {
+    const _e = e as KeyboardEvent;
+
+    if (_e.key === 'Escape') {
       handleClose();
     }
-  }
+  }, []);
+
+  isOpen
+    ? document.addEventListener('keydown', closeByEsc)
+    : document.removeEventListener('keydown', closeByEsc);
+
+  const formRef = React.useRef<HTMLFormElement>(null); //начальное значение?
 
   return (
     <div
@@ -49,4 +59,6 @@ export default function PopupWithForm({ isOpen, name, title, onClose, onSubmit, 
       </div>
     </div>
   );
-}
+};
+
+export default PopupWithForm;

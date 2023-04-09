@@ -1,14 +1,21 @@
 import React from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 
-import logo from '../images/header__logo.svg';
+import logo from '../../images/header__logo.svg';
+import { HeaderPropsType } from './types';
 
-export default function Header({ email, onSingOut }) {
+const Header: React.FC<HeaderPropsType> = ({ email, onSingOut }) => {
   const [isBurgerActive, setIsBurgerActive] = React.useState(false);
 
-  window.onresize = () => {
-    setIsBurgerActive(false);
-  };
+  React.useEffect(() => {
+    window.onresize = () => {
+      setIsBurgerActive(false);
+    };
+
+    return () => {
+      window.onresize = null;
+    };
+  }, []);
 
   const singOut = () => {
     setIsBurgerActive(false);
@@ -60,4 +67,6 @@ export default function Header({ email, onSingOut }) {
       </Routes>
     </header>
   );
-}
+};
+
+export default Header;

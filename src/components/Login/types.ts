@@ -5,10 +5,18 @@ export type LoginType = {
   password: string;
 }
 
+export type LoginErrorsType = {
+  email: string;
+  password: string;
+}
+
+export type OnLoginType = (
+  formValue: LoginType,
+  submitButton: RefObject<HTMLButtonElement>,
+  awaitText: string,
+  originalText: string
+) => void;
+
 export type LoginPropsType = {
-  onLogin: (
-    formValue: LoginType,
-    submitButton: RefObject<HTMLButtonElement>,
-    awaitText: string,
-    originalText: string) => void;
+  onLogin: OnLoginType
 }

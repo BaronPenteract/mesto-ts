@@ -1,16 +1,25 @@
 import React from 'react';
 
-import { CurrentUserContext } from '../contexts/CurrentUserContext';
-import PopupWithForm from './PopupWithForm';
-import { useFormAndValidation } from '../hooks/useFormAndValidation';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import PopupWithForm from '../PopupWithForm';
+import { useFormAndValidation } from '../../hooks/useFormAndValidation';
+import { EditProfilePopupErrorsType, EditProfilePopupPropsType } from './types';
+import { UserType } from '../../contexts/UserType';
 
-export default function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
+const EditProfilePopup: React.FC<EditProfilePopupPropsType> = ({
+  isOpen,
+  onClose,
+  onUpdateUser,
+}) => {
   const currentUser = React.useContext(CurrentUserContext);
 
   const { values, handleChange, errors, isValid, setValues, resetForm, setIsValid } =
     useFormAndValidation();
 
-  const submitButton = React.useRef();
+  const formValues = values as UserType;
+  const formErrors = errors as EditProfilePopupErrorsType;
+
+  const submitButton = React.useRef<HTMLButtonElement>(null);
 
   React.useEffect(() => {
     resetForm();
@@ -18,11 +27,13 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
     setIsValid(true);
   }, [currentUser, isOpen]);
 
-  function handleSubmit(e) {
+  const handleSubmit: React.FormEventHandler = (e) => {
     e.preventDefault();
 
-    onUpdateUser(values, submitButton, 'Сохранение...', submitButton.current.textContent);
-  }
+    if (submitButton.current?.textContent) {
+      onUpdateUser(formValues, submitButton, 'Сохранение...', submitButton.current.textContent);
+    }
+  };
 
   return (
     <PopupWithForm
@@ -37,35 +48,35 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
           <label className="form__label">
             <input
               id="edit-name-input"
-              className={`form__input ${errors.name ? 'form__input_type_error' : ''}`}
+              className={`form__input ${formErrors.name ? 'form__input_type_error' : ''}`}
               type="text"
               name="name"
               placeholder="Имя"
-              value={values.name || ''}
+              value={formValues.name || ''}
               onChange={handleChange}
               required
-              minLength="2"
-              maxLength="40"
+              minLength={2}
+              maxLength={40}
             />
-            <span className={`form__error ${errors.name ? 'form__error_active' : ''}`}>
-              {errors.name || ''}
+            <span className={`form__error ${formErrors.name ? 'form__error_active' : ''}`}>
+              {formErrors.name || ''}
             </span>
           </label>
           <label className="form__label">
             <input
               id="edit-job-input"
-              className={`form__input ${errors.about ? 'form__input_type_error' : ''}`}
+              className={`form__input ${formErrors.about ? 'form__input_type_error' : ''}`}
               type="text"
               name="about"
               placeholder="О себе"
-              value={values.about || ''}
+              value={formValues.about || ''}
               onChange={handleChange}
               required
-              minLength="2"
-              maxLength="200"
+              minLength={2}
+              maxLength={200}
             />
-            <span className={`form__error ${errors.about ? 'form__error_active' : ''}`}>
-              {errors.about || ''}
+            <span className={`form__error ${formErrors.about ? 'form__error_active' : ''}`}>
+              {formErrors.about || ''}
             </span>
           </label>
         </fieldset>
@@ -80,4 +91,6 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
       </>
     </PopupWithForm>
   );
-}
+};
+
+export default EditProfilePopup;
