@@ -1,6 +1,8 @@
 .cards__content {
   display: flex;
-  padding: 20px 20px;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  padding: 10px;
+  gap: 5px;
+  align-items: baseline;
+  color: #000;
 }

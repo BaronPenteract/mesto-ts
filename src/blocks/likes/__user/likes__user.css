@@ -1,0 +1,12 @@
+.likes__user {
+  width: 20px;
+  height: 20px;
+  box-sizing: border-box;
+  overflow: hidden;
+  border-radius: 50%;
+  border: 2px solid #000;
+}
+
+.likes__user:not(:first-child) {
+  margin-left: -10px;
+}

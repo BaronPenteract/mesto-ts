@@ -1,0 +1,25 @@
+.cards__owner-wrapper {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  top: 20px;
+  left: 20px;
+  z-index: 2;
+  width: 20px;
+  height: 20px;
+  border-radius: 12px;
+  background-color: #000000de;
+  color: #fff;
+
+  visibility: hidden;
+  opacity: 0;
+
+  transition: top .2s linear,
+              left .2s linear,
+              visibility .2s linear,
+              opacity .2s linear,
+              width .2s linear,
+              height .2s linear;
+}

@@ -1,0 +1,5 @@
+.cards__likes-container_active {
+  background-color: #000;
+  color: #fff;
+  padding-right: 6px;
+}

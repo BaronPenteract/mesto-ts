@@ -1,0 +1,22 @@
+.cards__owner {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  background-image: url(../../../images/icons/user.png);
+  background-position: center;
+  background-size: contain;
+  border: none;
+  outline: none;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 3;
+  cursor: pointer;
+  transition: opacity .2s linear;
+}
+
+.cards__owner:hover {
+  opacity: .6;
+}
