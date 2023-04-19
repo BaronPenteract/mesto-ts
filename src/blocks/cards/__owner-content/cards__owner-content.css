@@ -1,0 +1,20 @@
+.cards__owner-content {
+  margin: 0 auto;
+  height: 100%;
+  width: 100%;
+  max-width: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transform-origin: 0 0;
+  transform: scale(0);
+
+  transition: visibility .2s linear,
+              opacity .2s linear,
+              transform .4s linear;
+}

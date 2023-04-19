@@ -1,6 +1,7 @@
 import React from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import Likes from '../Likes';
+import OwnerButton from '../OwnerButton/OwnerButton';
 import { CardPropsType } from './types';
 
 const Card: React.FC<CardPropsType> = ({
@@ -14,8 +15,6 @@ const Card: React.FC<CardPropsType> = ({
   onCardDelete,
 }) => {
   const currentUser = React.useContext(CurrentUserContext);
-
-  const [isOwnerActive, setIsOwnerActive] = React.useState(false);
 
   const isOwner = owner._id === currentUser._id;
   const isLiked = likes.some((user) => user._id === currentUser._id);
@@ -41,22 +40,7 @@ const Card: React.FC<CardPropsType> = ({
   return (
     <article>
       <div className='cards__item'>
-        <button
-          className={`cards__owner`}
-          type='button'
-          title={`Создатель: ${owner.name}`}
-          onClick={() => {
-            setIsOwnerActive(!isOwnerActive);
-          }}
-        ></button>
-        <div
-          className={`cards__owner-wrapper ${isOwnerActive ? 'cards__owner-wrapper_active' : ''}`}
-        >
-          <p>Создатель</p>
-          <img className='' src={owner.avatar} alt={owner.name} />
-          <h3>{owner.name}</h3>
-          <p>{owner.about}</p>
-        </div>
+        <OwnerButton owner={owner} />
         <button
           className={`cards__delete ${isOwner && 'cards__delete_active'}`}
           type='button'

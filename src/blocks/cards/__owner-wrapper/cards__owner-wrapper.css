@@ -1,25 +1,22 @@
 .cards__owner-wrapper {
   position: absolute;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  top: 20px;
-  left: 20px;
+  top: -50px;
+  left: -50px;
   z-index: 2;
-  width: 20px;
-  height: 20px;
-  border-radius: 12px;
-  background-color: #000000de;
+  width: 60px;
+  height: 60px;
+  border-bottom-right-radius: 100%;
+  background-color: #000000f7;
   color: #fff;
 
-  visibility: hidden;
-  opacity: 0;
+ /*  visibility: hidden;
+  opacity: 0; */
 
-  transition: top .2s linear,
-              left .2s linear,
+  transition: top .4s linear,
+              left .4s linear,/* 
               visibility .2s linear,
-              opacity .2s linear,
-              width .2s linear,
-              height .2s linear;
+              opacity .2s linear, */
+              border-bottom-right-radius .4s linear,
+              width .4s linear,
+              height .4s linear;
 }

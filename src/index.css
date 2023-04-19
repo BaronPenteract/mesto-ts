@@ -49,8 +49,15 @@
 @import url('./blocks/cards/__item/cards__item.css');
 @import url('./blocks/cards/__owner/cards__owner.css');
 @import url('./blocks/cards/__owner/_active/cards__owner_active.css');
+@import url('./blocks/cards/__owner-content/cards__owner-content.css');
+@import url('./blocks/cards/__owner-content/_active/cards__owner-content_active.css');
 @import url('./blocks/cards/__owner-wrapper/cards__owner-wrapper.css');
 @import url('./blocks/cards/__owner-wrapper/_active/cards__owner-wrapper_active.css');
+@import url('./blocks/cards/__owner-wrapper/_on-pointer-enter/cards__owner-wrapper_on-pointer-enter.css');
+@import url('./blocks/cards/__owner-title/cards__owner-title.css');
+@import url('./blocks/cards/__owner-avatar/cards__owner-avatar.css');
+@import url('./blocks/cards/__owner-name/cards__owner-name.css');
+@import url('./blocks/cards/__owner-about/cards__owner-about.css');
 @import url('./blocks/cards/__delete/cards__delete.css');
 @import url('./blocks/cards/__delete/_active/cards__delete_active.css');
 @import url('./blocks/cards/__image/cards__image.css');

@@ -13,6 +13,7 @@ const Likes: React.FC<LikePropsType> = ({ likes, isLiked }) => {
     }
     return (
       <div
+        key={user._id}
         className={`likes__user ${isLiked && 'likes__user_active'}`}
         title={user.name + ' ' + user.about}
       >

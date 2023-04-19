@@ -4,6 +4,8 @@
   height: 282px;
   object-fit: cover;
   object-position: center;
+
+  transition: width 1.5s ease-out;
 }
 
 .cards__image:hover {

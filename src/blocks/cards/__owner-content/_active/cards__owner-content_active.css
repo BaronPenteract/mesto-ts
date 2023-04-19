@@ -1,0 +1,5 @@
+.cards__owner-content_active {
+  visibility: visible;
+  opacity: 1;
+  transform: scale(1);
+}

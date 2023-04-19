@@ -1,0 +1,11 @@
+.cards__owner-about {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+.cards__owner-about:last-of-type {
+  text-align: right;
+  font-size: 14px;
+}
