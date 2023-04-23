@@ -1,4 +1,4 @@
-# Проект: [Mesto Russia](https://baronpenteract.github.io/react-mesto-auth/index.html) on TypeScript
+# Проект: [Mesto Russia](https://baronpenteract.github.io/mesto-ts/index.html) on TypeScript
 
 ### Обзор
 
